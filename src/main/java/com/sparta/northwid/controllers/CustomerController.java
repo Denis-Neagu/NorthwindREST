@@ -41,7 +41,7 @@ public class CustomerController {
     }
 
     //customers/company?companyName=IT
-    @GetMapping("/customers/company")
+    @GetMapping(value = "/customers/company", params = {"companyName"})
     @ResponseBody
     public List<CustomerEntity> getCustomersByCompany(@RequestParam String companyName) {
         return customerRepository.findAll()
