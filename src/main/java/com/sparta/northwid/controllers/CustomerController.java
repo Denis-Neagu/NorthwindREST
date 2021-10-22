@@ -3,6 +3,8 @@ package com.sparta.northwid.controllers;
 import com.sparta.northwid.entities.CustomerEntity;
 import com.sparta.northwid.repositories.CustomersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,11 +45,15 @@ public class CustomerController {
     //customers/company?companyName=IT
     @GetMapping(value = "/customers/company", params = {"companyName"})
     @ResponseBody
-    public List<CustomerEntity> getCustomersByCompany(@RequestParam String companyName) {
-        return customerRepository.findAll()
-                .stream()
-                .filter(customerEntity -> customerEntity.getCompanyName().contains(companyName))
-                .collect(Collectors.toList());
+    public ResponseEntity<List<CustomerEntity>> getCustomersByCompany(@RequestParam String companyName) {
+        if (companyName.matches("[a-zA-Z]+")) {
+            return ResponseEntity.of(Optional.of(customerRepository.findAll()
+                    .stream()
+                    .filter(customerEntity -> customerEntity.getCompanyName().contains(companyName))
+                    .collect(Collectors.toList())));
+        } else {
+            return ResponseEntity.status(422).build();
+        }
     }
 
     //customers/city?cityName=London
