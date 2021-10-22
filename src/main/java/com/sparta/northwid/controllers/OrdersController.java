@@ -1,9 +1,8 @@
 package com.sparta.northwid.controllers;
 
+import com.sparta.northwid.dto.OrdersDto;
 import com.sparta.northwid.entities.CustomerEntity;
-import com.sparta.northwid.entities.Employee;
 import com.sparta.northwid.entities.OrderEntity;
-import com.sparta.northwid.repositories.CustomersRepository;
 import com.sparta.northwid.repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +30,7 @@ public class OrdersController {
         Map<Integer, CustomerEntity> map = new HashMap<>();
 
         for(OrderEntity order : ordersRepository.findAll()) {
+
             if (order.getId().equals(orderId)) {
                 map.put(orderId, order.getCustomerID());
             }
@@ -41,14 +41,16 @@ public class OrdersController {
 
     @GetMapping(value = "/orders", params = {"customerId"})
     @ResponseBody
-    public List<OrderEntity> getOrdersByCustomer(@RequestParam String customerId) {
-        List<OrderEntity> orderEntities = new ArrayList<>();
+    public List<OrdersDto> getOrdersByCustomer(@RequestParam String customerId) {
+        List<OrdersDto> orderEntities = new ArrayList<>();
 
         for (OrderEntity order : ordersRepository.findAll()) {
-            CustomerEntity customer = order.getCustomerID();
+
+            OrdersDto ordersDto = new OrdersDto(order);
+            CustomerEntity customer = ordersDto.getCustomerID();
 
             if (customer.getId().equalsIgnoreCase(customerId)) {
-                orderEntities.add(order);
+                orderEntities.add(ordersDto);
             }
         }
 
