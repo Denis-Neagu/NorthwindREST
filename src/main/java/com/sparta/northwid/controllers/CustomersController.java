@@ -31,7 +31,7 @@ public class CustomersController {
                     .filter(customerEntity -> customerEntity.getCompanyName().contains(companyName))
                     .collect(Collectors.toList())));
         } else {
-            return ResponseEntity.status(422).build();
+            return ResponseEntity.status(400).build();
         }
     }
 

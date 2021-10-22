@@ -5,8 +5,13 @@ import com.sparta.northwid.entities.CustomerEntity;
 import com.sparta.northwid.entities.OrderEntity;
 import com.sparta.northwid.repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -56,4 +61,28 @@ public class OrdersController {
 
         return orderEntities;
     }
+    
+    @GetMapping(value = "/orders/date", params = {"orderDate"})
+    @ResponseBody
+    public List<OrderEntity> getOrdersByDate(@RequestParam String orderDate) {
+        List<OrderEntity> orderEntities = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        try {
+            Instant instant = sdf.parse(orderDate).toInstant();
+
+            for (OrderEntity order : ordersRepository.findAll()) {
+                if(order.getOrderDate().compareTo(instant)==0) {
+                    orderEntities.add(order);
+                }
+            }
+        } catch (ParseException e)  {
+            e.printStackTrace();
+
+        }
+
+        return orderEntities;
+    }
+
 }
