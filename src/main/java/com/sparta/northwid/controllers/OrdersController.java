@@ -1,6 +1,7 @@
 package com.sparta.northwid.controllers;
 
 import com.sparta.northwid.entities.CustomerEntity;
+import com.sparta.northwid.entities.Employee;
 import com.sparta.northwid.entities.OrderEntity;
 import com.sparta.northwid.repositories.CustomersRepository;
 import com.sparta.northwid.repositories.OrdersRepository;
@@ -36,5 +37,21 @@ public class OrdersController {
         }
 
         return new ArrayList<>(map.values());
+    }
+
+    @GetMapping(value = "/orders", params = {"customerId"})
+    @ResponseBody
+    public List<OrderEntity> getOrdersByCustomer(@RequestParam String customerId) {
+        List<OrderEntity> orderEntities = new ArrayList<>();
+
+        for (OrderEntity order : ordersRepository.findAll()) {
+            CustomerEntity customer = order.getCustomerID();
+
+            if (customer.getId().equalsIgnoreCase(customerId)) {
+                orderEntities.add(order);
+            }
+        }
+
+        return orderEntities;
     }
 }

@@ -22,7 +22,6 @@ public class CustomersController {
         this.customerRepository = customersRepository;
     }
 
-    //customers/company?companyName=IT
     @GetMapping(value = "/customers/company", params = {"companyName"})
     @ResponseBody
     public ResponseEntity<List<CustomerEntity>> getCustomersByCompany(@RequestParam String companyName) {
@@ -36,7 +35,6 @@ public class CustomersController {
         }
     }
 
-    //customers?contactName=Denis
     @GetMapping("/customers")
     @ResponseBody
     public List<CustomerEntity> getAllCustomers(@RequestParam(required = false) String contactName) {
@@ -50,13 +48,11 @@ public class CustomersController {
                 .collect(Collectors.toList());
     }
 
-    //customers/ALFKI
     @GetMapping("/customers/{id}")
     public Optional<CustomerEntity> getCustomerById(@PathVariable String id) {
         return customerRepository.findById(id);
     }
 
-    //customers/city?cityName=London
     @GetMapping(value = "/customers/city", params = {"cityName"})
     @ResponseBody
     public List<CustomerEntity> getCustomerByCity(@RequestParam String cityName) {
@@ -69,7 +65,6 @@ public class CustomersController {
         return foundCustomersInCity;
     }
 
-    //customers/title?contactTitle=Owner
     @GetMapping(value = "/customers/title", params = {"contactTitle"})
     @ResponseBody
     public List<CustomerEntity> getCustomersByContactTitle(@RequestParam String contactTitle) {
