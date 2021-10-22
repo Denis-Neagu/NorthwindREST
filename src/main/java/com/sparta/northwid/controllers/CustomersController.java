@@ -13,13 +13,27 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-public class CustomerController {
+public class CustomersController {
 
     CustomersRepository customerRepository;
 
     @Autowired
-    public CustomerController(CustomersRepository customersRepository) {
+    public CustomersController(CustomersRepository customersRepository) {
         this.customerRepository = customersRepository;
+    }
+
+    //customers/company?companyName=IT
+    @GetMapping(value = "/customers/company", params = {"companyName"})
+    @ResponseBody
+    public ResponseEntity<List<CustomerEntity>> getCustomersByCompany(@RequestParam String companyName) {
+        if (companyName.matches("[a-zA-Z]+")) {
+            return ResponseEntity.of(Optional.of(customerRepository.findAll()
+                    .stream()
+                    .filter(customerEntity -> customerEntity.getCompanyName().contains(companyName))
+                    .collect(Collectors.toList())));
+        } else {
+            return ResponseEntity.status(422).build();
+        }
     }
 
     //customers?contactName=Denis
@@ -40,20 +54,6 @@ public class CustomerController {
     @GetMapping("/customers/{id}")
     public Optional<CustomerEntity> getCustomerById(@PathVariable String id) {
         return customerRepository.findById(id);
-    }
-
-    //customers/company?companyName=IT
-    @GetMapping(value = "/customers/company", params = {"companyName"})
-    @ResponseBody
-    public ResponseEntity<List<CustomerEntity>> getCustomersByCompany(@RequestParam String companyName) {
-        if (companyName.matches("[a-zA-Z]+")) {
-            return ResponseEntity.of(Optional.of(customerRepository.findAll()
-                    .stream()
-                    .filter(customerEntity -> customerEntity.getCompanyName().contains(companyName))
-                    .collect(Collectors.toList())));
-        } else {
-            return ResponseEntity.status(422).build();
-        }
     }
 
     //customers/city?cityName=London
