@@ -17,7 +17,6 @@ public class CustomersController {
 
     CustomersRepository customerRepository;
 
-    @Autowired
     public CustomersController(CustomersRepository customersRepository) {
         this.customerRepository = customersRepository;
     }
