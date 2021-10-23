@@ -61,7 +61,7 @@ public class OrdersController {
 
         return orderEntities;
     }
-    
+
     @GetMapping(value = "/orders/date", params = {"orderDate"})
     @ResponseBody
     public List<OrderEntity> getOrdersByDate(@RequestParam String orderDate) {
