@@ -15,6 +15,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @SpringBootTest
@@ -60,4 +61,22 @@ public class CustomersControllerTest {
         Assertions.assertTrue(returnedEntities.size() > 0);
         Assertions.assertTrue(returnedEntities.contains(customer2));
     }
+
+    @Test
+    void getCustomerByIdReturnsCustomerAtId() {
+        CustomerEntity customer = new CustomerEntity();
+        customer.setId("ABC");
+
+        List<CustomerEntity> entities = new ArrayList<>();
+        entities.add(customer);
+
+        Mockito.when(customersRepository.findById(entities.get(0).getId())).thenReturn(Optional.of(customer));
+
+        Optional<CustomerEntity> responseEntities = customersController.getCustomerById("ABC");
+
+        Assertions.assertFalse(responseEntities.isEmpty());
+        Assertions.assertEquals(customer.getId(), responseEntities.get().getId());
+
+    }
+
 }
