@@ -40,6 +40,24 @@ public class CustomersControllerTest {
 
         Assertions.assertEquals(200, responseEntity.getStatusCodeValue());
         Assertions.assertTrue( ((List<CustomerEntity>)responseEntity.getBody()).size() > 0);
+    }
 
+    @Test
+    void getAllCustomersShouldReturnAllCustomers() {
+        CustomerEntity customer = new CustomerEntity();
+        customer.setContactName("name");
+        CustomerEntity customer2 = new CustomerEntity();
+        customer2.setContactName("somecontactname");
+
+        List<CustomerEntity> entities = new ArrayList<>();
+        entities.add(customer);
+        entities.add(customer2);
+
+        Mockito.when(customersRepository.findAll()).thenReturn(entities);
+
+        List<CustomerEntity> returnedEntities = customersController.getAllCustomers("somecontactname");
+
+        Assertions.assertTrue(returnedEntities.size() > 0);
+        Assertions.assertTrue(returnedEntities.contains(customer2));
     }
 }
