@@ -20,8 +20,6 @@ import java.util.List;
 public class OrdersControllerTest {
 
     @Mock
-    CustomersRepository customersRepository;
-    @Mock
     OrdersRepository ordersRepository;
 
     @InjectMocks
