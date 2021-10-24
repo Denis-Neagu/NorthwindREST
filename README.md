@@ -1,6 +1,6 @@
 # NorthwindREST
 
-##Goals
+## Goals
 * Build a REST API for the Northwind Database.
 * Test the API using Mockito
 * Demonstrate understanding of HTTP, Spring, GET requests and refer to SOLID for the project's structure
